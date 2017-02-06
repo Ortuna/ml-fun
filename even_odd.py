@@ -5,12 +5,12 @@ import numpy as np
 import random
 
 def int_to_binary(value):
-    return list("{:#018b}".format(i))[2:]
+    return list("{:#018b}".format(value))[2:]
 
 iris_dataset = load_iris()
 knn = KNeighborsClassifier(n_neighbors=1)
 
-COUNT = 50000
+COUNT = 9999
 values = np.zeros((COUNT, 16))
 answers = np.zeros(COUNT, dtype=int)
 
@@ -32,6 +32,7 @@ for i in range(0,COUNT):
 X_train, X_test, y_train, y_test = train_test_split(
     values,
     answers
+
 )
 
 #print(X_train.shape)
@@ -40,11 +41,14 @@ X_train, X_test, y_train, y_test = train_test_split(
 knn.fit(X_train, y_train)
 print(knn.score(X_test, y_test))
 
-brand_new = np.zeros((20, 16))
+brand_new = []
+brand_new_int = []
 for i in range(0,20):
-    v = random.randint(1, 500)
-    print(v)
-    brand_new[i] = int_to_binary(v)
+    v = random.randint(1, 9999)
+    brand_new_int.append(v)
+    brand_new.append(int_to_binary(v))
+
 
 predictions = knn.predict(brand_new)
-print(predictions)
+for i in range(0, len(brand_new)):
+    print("{} = {} = {}".format(brand_new_int[i], predictions[i], (brand_new_int[i] % 2) == 0))
